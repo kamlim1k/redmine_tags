@@ -14,22 +14,23 @@ module TagsHelper
   def render_tag_link(tag, options = {})
     filters = [[:tags, '=', tag.name]]
     filters << [:status_id, 'o'] if options[:open_only]
+    tag_style, link_style = if RedmineTags.settings[:issues_use_colors].to_i > 0
+      tag_color, link_color = tag_color tag
+      [{class: 'tag-label-color', 
+          style: "background-color: #{ tag_color }"},{style: "color: #{ link_color }"}]
+    else
+      [{class: 'tag-label'}, {}]
+    end
     if options[:use_search]
       content = link_to tag, { controller: 'search', action: 'index',
-        id: @project, q: tag.name, wiki_pages: true, issues: true }
+        id: @project, q: tag.name, wiki_pages: true, issues: true }, link_style
     else
-      content = link_to_filter tag.name, filters, project_id: @project
+      content = link_to_filter tag.name, filters, project_id: @project, link_style
     end
     if options[:show_count]
       content << content_tag('span', "(#{ tag.count })", class: 'tag-count')
     end
-    style = if RedmineTags.settings[:issues_use_colors].to_i > 0
-        { class: 'tag-label-color',
-          style: "background-color: #{ tag_color tag }" }
-      else
-        { class: 'tag-label' }
-      end
-    content_tag 'span', content, style
+    content_tag 'span', content, tag_style
   end
 
   def tag_color(tag)

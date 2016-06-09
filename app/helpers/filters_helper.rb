@@ -7,9 +7,9 @@ module FiltersHelper
   # === example
   # link_to_filter 'foobar', [[ :tags, '~', 'foobar' ]]
   # link_to_filter 'foobar', [[ :tags, '~', 'foobar' ]], :project_id => project
-  def link_to_filter(title, filters, options = {})
+  def link_to_filter(title, filters, options = {}, htmlOptions = {})
     options.merge! link_to_filter_options(filters)
-    link_to title, options
+    link_to title, options, htmlOptions
   end
 
   # returns hash suitable for passing it to the <tt>to_link</tt>
