@@ -29,7 +29,7 @@ module TagsHelper
       content = link_to_filter tag.name, filters, {project_id: @project}, link_style
     end
     if options[:show_count]
-      content << content_tag('span', "(#{ tag.count })", class: 'tag-count')
+      content << content_tag('span', "(#{ tag.count })", link_style.merge({class: 'tag-count'}))
     end
     content_tag 'span', content, style
   end
